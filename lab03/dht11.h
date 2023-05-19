@@ -14,6 +14,7 @@ uint8_t DHT11_Check_Response(void);
 
 uint8_t DHT11_Read(void);
 
-float DHT11_get_temperature(void);
+float DHT11_get_temperature(float *hum);
+
 
 #endif

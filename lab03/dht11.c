@@ -1,7 +1,8 @@
 #include "gpio.h"
 #include "delay.h"
 
-#define DHT11_PIN P_LED_B
+
+#define DHT11_PIN PA_1
 
 void DHT11_Start(void)
 {
@@ -43,7 +44,7 @@ uint8_t DHT11_Read(void)
 	return i;
 }
 
-float DHT11_get_temperature(void){
+float DHT11_get_temperature(float *hum){
 	DHT11_Start();
 	uint8_t Response = DHT11_Check_Response();
 	
@@ -54,8 +55,15 @@ float DHT11_get_temperature(void){
 	t_I = DHT11_Read();
 	t_D = DHT11_Read();
 	
-	int temp = ((t_I << 8) | t_D);
-	float temp_float = temp/10.0;
+	//int temp = ((t_I << 8) | t_D);
+	float temp_float = t_I + t_D/10.0;
+	float hum_float = hd_I + hd_D / 10.0;
+	
+	*hum = hum_float;
+	
 	
 	return temp_float;
 }
+
+
+

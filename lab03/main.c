@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "uart.h"
 #include "gpio.h"
 #include "leds.h"
@@ -13,16 +14,20 @@
 static uint32_t AEM_last_digits;
 static int period;
 static int seconds;
-float static temperature;
+static int counter = 0;
+static float temperature;
+static float humidity;
 
 void timer_isr(void){
 	seconds += 1;
 	seconds %= period;
+
 	if (seconds == 0){
 		
-		temperature = DHT11_get_temperature();
-		char temp[50];
-		sprintf(temp, "The current temperature is: %.2f  and the current period is: %d \r\n", temperature, period);
+		temperature = DHT11_get_temperature(&humidity);
+		
+		char temp[250];
+		sprintf(temp, "The current temperature is: %.2f, humidity is: %.2f and the current period is: %d \r\n", temperature, humidity, period);
 		uart_print(temp);
 		
 		if (temperature > 25){
@@ -40,7 +45,8 @@ void timer_isr(void){
 }
 
 void switch_isr(int status){
-	static int counter = 0;
+	
+	
 	seconds = 0;
 	counter ++;
 	if(counter == 1){
@@ -51,20 +57,28 @@ void switch_isr(int status){
 		
 	}
 	
+	char temp[200];
+	sprintf(temp, "Counter is: %d, new period is: %d \r\n", counter, period);
+	uart_print(temp);
 }
 
 
 void uart_get_AEM(void){
 	uint8_t c;
 	uint8_t c1, c2;
-	Queue *queue;
+	Queue *queue = (Queue*)malloc(15*sizeof(Queue));
+	
 	queue_init(queue, 15);
 	
-	while((c = uart_rx()) != '\r'){
+	c = 'a';
+	while(c != '\r'){	
 		queue_enqueue(queue, c);
+		c = uart_rx();
+		uart_tx(c);
 	}
+	uart_print("\r\n");
 	
-	while(!queue_is_empty(queue)){
+	while(!queue_is_empty(queue)){		
 		queue_dequeue(queue, &c1);
 		queue_dequeue(queue, &c2);
 	}
@@ -73,6 +87,7 @@ void uart_get_AEM(void){
 	if(AEM_last_digits <= 2){
 		AEM_last_digits = 4;
 	}
+	free(queue);
 }
 
 
@@ -88,20 +103,20 @@ int main(void){
 	
 	leds_init();
 	
+	gpio_set_callback(SWITCH, switch_isr);
 	gpio_set_mode(SWITCH, PullDown);
 	gpio_set_trigger(SWITCH, Rising);
 	
 	period = 2;
-	timer_init(1e6);
 	
-	timer_set_callback(timer_isr);
-
 	uart_get_AEM();
 
-	gpio_set_callback(SWITCH, switch_isr);
+	
+	timer_init(1e6);
+	timer_set_callback(timer_isr);
 	timer_enable();
 	/*loop */
 	while(1){
-	
+		__WFI();
 	}
 }
