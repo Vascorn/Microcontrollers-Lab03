@@ -27,6 +27,7 @@ uint8_t DHT11_Check_Response(void)
 	return Response;
 }
 
+//Read 8 bit data, transmitted from the sensor DHT11
 uint8_t DHT11_Read(void)
 {
 	uint8_t i,j;
@@ -44,6 +45,8 @@ uint8_t DHT11_Read(void)
 	return i;
 }
 
+
+//Read temperature & humidity and convert the 2 - 8bit values obtained, to one float.
 float DHT11_get_temperature(float *hum){
 	DHT11_Start();
 	uint8_t Response = DHT11_Check_Response();
@@ -55,7 +58,7 @@ float DHT11_get_temperature(float *hum){
 	t_I = DHT11_Read();
 	t_D = DHT11_Read();
 	
-	//int temp = ((t_I << 8) | t_D);
+	//Obtain float value for temperature and humidity
 	float temp_float = t_I + t_D/10.0;
 	float hum_float = hd_I + hd_D / 10.0;
 	
