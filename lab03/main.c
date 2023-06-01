@@ -43,7 +43,7 @@ void timer_isr(void){
 		sprintf(temp, "The current temperature is: %.2f, humidity is: %.2f and the current period is: %d . Checksum: %d \r\n", temperature, humidity, period, check);
 		uart_print(temp);
 		
-		if (temperature > 28){
+		if (temperature > 25){
 			//Turn on LED, if temperature > 25 degrees
 			gpio_set(LED, 1);
 		}
@@ -54,7 +54,7 @@ void timer_isr(void){
 	}
 	
 	//Toggle LED, if temperature in range [20, 25]
-	if (temperature <= 28 && temperature >= 20)
+	if (temperature <= 25 && temperature >= 20)
 		gpio_toggle(LED);
 	
 
