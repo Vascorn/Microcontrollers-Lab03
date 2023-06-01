@@ -22,12 +22,108 @@ Dialog DLL:      TCM.DLL V1.53.0.0
  
 <h2>Project:</h2>
 C:\Users\student\Desktop\Microcontrollers-Lab03\lab03\lab03.uvprojx
-Project File Date:  05/19/2023
+Project File Date:  05/25/2023
 
 <h2>Output:</h2>
 *** Using Compiler 'V6.16', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Build target 'Target 1'
-".\Objects\lab03.axf" - 0 Error(s), 0 Warning(s).
+main.c(3): warning: In file included from...
+./drivers\uart.h(43): warning: // comments are not allowed in this language [-Wcomment]
+#endif // UART_H
+       ^
+main.c(4): warning: In file included from...
+./drivers\gpio.h(12): warning: In file included from...
+./drivers/platform.h(18): warning: non-portable path to file '<stm32f4xx.h>'; specified path differs in case from file name on disk [-Wnonportable-include-path]
+#include <STM32F4xx.h>
+         ^~~~~~~~~~~~~
+         <stm32f4xx.h>
+./drivers/platform.h(20): warning: // comments are not allowed in this language [-Wcomment]
+// Core CPU frequency.
+^
+main.c(4): warning: In file included from...
+./drivers\gpio.h(16): warning: // comments are not allowed in this language [-Wcomment]
+        Reset,   //!< Resets the pin-mode to the default value.
+                 ^
+main.c(5): warning: In file included from...
+./drivers\leds.h(20): warning: // comments are not allowed in this language [-Wcomment]
+#endif // LEDS_H
+       ^
+main.c(6): warning: In file included from...
+./drivers\timer.h(29): warning: // comments are not allowed in this language [-Wcomment]
+#endif // TIMER_H
+       ^
+main.c(7): warning: In file included from...
+./drivers\queue.h(15): warning: // comments are not allowed in this language [-Wcomment]
+        uint8_t* data; //!< Array of data, stored on the heap.
+                       ^
+main.c(8): warning: In file included from...
+./dht11.h(20): warning: no newline at end of file [-Wnewline-eof]
+#endif
+      ^
+main.c(36): warning: // comments are not allowed in this language [-Wcomment]
+        //Check if |period| seconds have passed
+        ^
+main.c(43): warning: implicit conversion increases floating-point precision: 'float' to 'double' [-Wdouble-promotion]
+                sprintf(temp, "The current temperature is: %.2f, humidity is: %.2f and the current period is: %d . Checksum: %d \r\n", temperature, humidity, period, check);
+                ~~~~~~~                                                                                                                             ^~~~~~~~
+main.c(43): warning: implicit conversion increases floating-point precision: 'float' to 'double' [-Wdouble-promotion]
+                sprintf(temp, "The current temperature is: %.2f, humidity is: %.2f and the current period is: %d . Checksum: %d \r\n", temperature, humidity, period, check);
+                ~~~~~~~                                                                                                                ^~~~~~~~~~~
+main.c(42): warning: ISO C90 forbids mixing declarations and code [-Wdeclaration-after-statement]
+                char temp[250];
+                     ^
+main.c(31): warning: no previous prototype for function 'timer_isr' [-Wmissing-prototypes]
+void timer_isr(void){
+     ^
+main.c(31): note: declare 'static' if the function is not intended to be used outside of this translation unit
+void timer_isr(void){
+^
+static 
+main.c(75): warning: implicit conversion changes signedness: 'uint32_t' (aka 'unsigned int') to 'int' [-Wsign-conversion]
+                period = AEM_last_digits;
+                       ~ ^~~~~~~~~~~~~~~
+main.c(85): warning: ISO C90 forbids mixing declarations and code [-Wdeclaration-after-statement]
+        char temp[200];
+             ^
+main.c(69): warning: unused parameter 'status' [-Wunused-parameter]
+void switch_isr(int status){
+                    ^
+main.c(69): warning: no previous prototype for function 'switch_isr' [-Wmissing-prototypes]
+void switch_isr(int status){
+     ^
+main.c(69): note: declare 'static' if the function is not intended to be used outside of this translation unit
+void switch_isr(int status){
+^
+static 
+main.c(95): warning: no previous prototype for function 'uart_get_AEM' [-Wmissing-prototypes]
+void uart_get_AEM(void){
+     ^
+main.c(95): note: declare 'static' if the function is not intended to be used outside of this translation unit
+void uart_get_AEM(void){
+^
+static 
+main.c(120): warning: variable 'c1' may be uninitialized when used here [-Wconditional-uninitialized]
+        AEM_last_digits = c1 + c2 - 2 * ASCII_0;
+                          ^~
+main.c(97): note: initialize the variable 'c1' to silence this warning
+        uint8_t c1, c2;
+                  ^
+                   = '\0'
+main.c(120): warning: variable 'c2' may be uninitialized when used here [-Wconditional-uninitialized]
+        AEM_last_digits = c1 + c2 - 2 * ASCII_0;
+                               ^~
+main.c(97): note: initialize the variable 'c2' to silence this warning
+        uint8_t c1, c2;
+                      ^
+                       = '\0'
+main.c(170): warning: no newline at end of file [-Wnewline-eof]
+}
+ ^
+21 warnings generated.
+compiling main.c...
+linking...
+Program Size: Code=16280 RO-data=1164 RW-data=4 ZI-data=1700  
+".\Objects\lab03.axf" - 0 Error(s), 21 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -70,12 +166,12 @@ Package Vendor: Keil
       Source file:   Source\retarget_io.c
 
    * Component: Keil::Device:Startup:2.6.3
+      Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\arm\startup_stm32f411xe.s
+      Include file:  Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
       Source file:   MDK\Device\Source\ARM\STM32F411xx_OPT.s
       Source file:   MDK\Device\Source\ARM\STM32F4xx_OTP.s
-      Include file:  Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
-      Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\arm\startup_stm32f411xe.s
       Source file:   Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\system_stm32f4xx.c
-Build Time Elapsed:  00:00:00
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>

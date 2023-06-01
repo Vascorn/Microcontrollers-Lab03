@@ -21,6 +21,7 @@ static uint32_t AEM_last_digits;
 static int period;
 static int seconds;
 static int counter = 0;
+static int check;
 static float temperature;
 static float humidity;
 
@@ -36,13 +37,13 @@ void timer_isr(void){
 	if (seconds == 0){
 		
 		// read temperature and humidity from sensor DHT11
-		temperature = DHT11_get_temperature(&humidity);
+		temperature = DHT11_get_temperature(&humidity, &check);
 		
 		char temp[250];
-		sprintf(temp, "The current temperature is: %.2f, humidity is: %.2f and the current period is: %d \r\n", temperature, humidity, period);
+		sprintf(temp, "The current temperature is: %.2f, humidity is: %.2f and the current period is: %d . Checksum: %d \r\n", temperature, humidity, period, check);
 		uart_print(temp);
 		
-		if (temperature > 25){
+		if (temperature > 28){
 			//Turn on LED, if temperature > 25 degrees
 			gpio_set(LED, 1);
 		}
@@ -53,7 +54,7 @@ void timer_isr(void){
 	}
 	
 	//Toggle LED, if temperature in range [20, 25]
-	if (temperature <= 25 && temperature >= 20)
+	if (temperature <= 28 && temperature >= 20)
 		gpio_toggle(LED);
 	
 
